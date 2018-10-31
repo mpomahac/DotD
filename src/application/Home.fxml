@@ -6,41 +6,20 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.HomeController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-            <Menu id="menuHome" mnemonicParsing="false" text="Home">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
-              </items>
-            </Menu>
-          <Menu id="menuRaidCamp" mnemonicParsing="false" text="Raids/Camps">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu id="menuWar" mnemonicParsing="false" text="War Tracker">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu id="menuLand" mnemonicParsing="false" text="Land Calculator">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-            <Menu id="menuLog" mnemonicParsing="false" text="Raid Log Filter">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
-              </items>
-            </Menu>
+            <Menu fx:id="menuHome" mnemonicParsing="false" text="Home" />
+          <Menu fx:id="menuRaidCamp" mnemonicParsing="false" text="Raids/Camps" />
+          <Menu fx:id="menuWar" mnemonicParsing="false" text="War Tracker" />
+          <Menu fx:id="menuLandCalc" mnemonicParsing="false" text="Land Calculator" />
+            <Menu fx:id="menuLogFilter" mnemonicParsing="false" text="Raid Log Filter" />
         </menus>
       </MenuBar>
    </top>
    <center>
-      <GridPane gridLinesVisible="true" style="-fx-border-color: gray;" BorderPane.alignment="CENTER">
+      <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -62,17 +41,17 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Characters:" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Label text="Characters:" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
                      <font>
                         <Font size="26.0" />
                      </font>
                   </Label>
-                  <Button id="btnAddChar" alignment="CENTER" mnemonicParsing="false" style="-fx-border-color: black; -fx-background-color: lime; -fx-border-radius: 5;" text="Add character" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Button fx:id="btnAddChar" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Add character" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button id="btnDeleteChar" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: red; -fx-border-color: black; -fx-border-radius: 5;" text="Delete character" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Button fx:id="btnDeleteChar" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Delete character" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -89,17 +68,17 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label text="Raids: " GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Label text="Raids: " GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
                      <font>
                         <Font size="26.0" />
                      </font>
                   </Label>
-                  <Button id="btnAddRaid" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: red; -fx-border-color: black; -fx-border-radius: 5;" text="Delete raid" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Button fx:id="btnDeleteRaid" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Delete raid" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button id="btnAddRaid" alignment="CENTER" mnemonicParsing="false" style="-fx-border-color: black; -fx-background-color: lime; -fx-border-radius: 5;" text="Add raid" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Button fx:id="btnAddRaid" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Add raid" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -116,17 +95,17 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label text="Campaigns:" GridPane.halignment="CENTER">
+                  <Label text="Campaigns:" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
                      <font>
                         <Font size="26.0" />
                      </font>
                   </Label>
-                  <Button id="btnAddCampaign" alignment="CENTER" mnemonicParsing="false" style="-fx-border-color: black; -fx-background-color: lime; -fx-border-radius: 5;" text="Add campaign" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Button fx:id="btnAddCamp" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#addCamp" text="Add campaign" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button id="btnAddCampaign" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: red; -fx-border-color: black; -fx-border-radius: 5;" text="Delete campaign" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Button fx:id="btnDeleteCamp" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Delete campaign" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -143,14 +122,14 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Button id="btnSaveAndQuit" defaultButton="true" mnemonicParsing="false" text="Save and quit" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Button fx:id="btnSaveAndQuit" defaultButton="true" mnemonicParsing="false" onAction="#saveAndQuit" text="Save and quit" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Button>
                </children>
             </GridPane>
-            <Button id="btnStartWar" defaultButton="true" mnemonicParsing="false" prefHeight="95.0" prefWidth="575.0" text="Start war/assault tracker" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+            <Button fx:id="btnStartWar" defaultButton="true" mnemonicParsing="false" prefHeight="95.0" prefWidth="575.0" text="Start war/assault tracker" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                <font>
                   <Font size="40.0" />
                </font>

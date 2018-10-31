@@ -1,0 +1,125 @@
+//Dropdown
+ChoiceBox<String> choiceBox = new ChoiceBox<>(); //init
+choiceBox.getItems().addAll(
+			"Small", 
+			"Medium", 
+			"Large", 
+			"Epic", 
+			"Colossal", 
+			"Gigantic"
+		); //item add
+choiceBox.setValue(choiceBox.getItems().get(0)); //set default value
+choiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> System.out.println(oldValue + ", " + newValue)); //listener for change
+
+
+//ComboBox
+comboBox = new ComboBox<>(); //init
+comboBox.getItems().addAll(
+			"Small",
+			"Medium",
+			"Large",
+			"Epic",
+			"Colossal",
+			"Gigantic"
+		); //item add
+comboBox.setPromptText("---Raid size---"); //prompt
+comboBox.setOnAction(e -> System.out.println()); //on action
+
+
+//Button
+btn1 = new Button("Go to next scene"); //set btn text
+btn1.setOnAction(e -> {
+	boolean result = ConfirmBox.display("Are you sure?", "Move to next scene?"); //open confirm box and get reply
+	if(result) {
+		window.setScene(scene2);
+	}
+	else {
+		getChoice(choiceBox);
+	}
+});
+
+
+//getChoice func
+private void getChoice(ChoiceBox choiceBox) {
+	System.out.println(choiceBox.getValue());
+}
+
+
+//Application closing via btn
+closeBtn = new Button("Close");
+closeBtn.setOnAction(e -> {
+	boolean result = ConfirmBox.display("Close program?", "Are you sure you want to close the program?");
+	if(result) {
+		closeProgram();
+	}
+});
+
+//closeProgram func
+private void closeProgram() {
+	System.out.println("Program closed by button");
+	window.close();
+}
+
+
+//Application closing via window close
+window.setOnCloseRequest(e -> {
+	e.consume();
+	boolean result = ConfirmBox.display("Close program?", "Are you sure you want to close the program?");
+	if(result) {
+		closeProgramByX();
+	}
+});
+
+//closeProgramByX func
+private void closeProgramByX() {
+	System.out.println("Program closed by X button");
+	window.close();
+}
+
+
+//Layout
+layout.getChildren().add("Item"); || layout.getChildren().addAll("Item1", "Item2", ...);
+
+
+//Embedded layout
+HBox topMenu = new HBox();
+topMenu.getChildren().addAll(label1, btn1);
+
+VBox leftMenu = new VBox();
+leftMenu.getChildren().addAll(closeBtn, choiceBox, comboBox);
+
+BorderPane layout1 = new BorderPane();
+layout1.setTop(topMenu);
+layout1.setLeft(leftMenu);
+
+
+//GridPane layout
+Label lName = new Label("Raid name:");
+GridPane.setConstraints(lName, 0, 0);
+TextField iName = new TextField();
+iName.setPromptText("Name of the raid");
+GridPane.setConstraints(iName, 1, 0);
+			//Size label and input//
+Label lSize = new Label("Raid size:");
+GridPane.setConstraints(lSize, 0, 1);
+TextField iSize = new TextField();
+iSize.setPromptText("Size of the raid (1-Small, 6-Gigantic");
+GridPane.setConstraints(iSize, 1, 1);
+			//Submit button//
+Button submitBtn = new Button("Submit");
+GridPane.setConstraints(submitBtn, 1, 2);
+
+submitBtn.setOnAction(e -> {
+	if(isInt(iSize, iSize.getText())) {
+		System.out.println("Name: " + iName.getText() + "\nSize: " + iSize.getText());
+		window.setScene(scene2);
+	}
+});
+
+layout3.getChildren().addAll(lName, iName, lSize, iSize, submitBtn);
+
+
+
+
+
+
