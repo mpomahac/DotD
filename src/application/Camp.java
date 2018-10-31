@@ -13,7 +13,6 @@ import java.util.Scanner;
 
 public class Camp {
 	
-	public static List<Camp> allCamps = new ArrayList<>();
 	public static final Map<String, String> apTiers;
 	static
 	{
@@ -43,10 +42,10 @@ public class Camp {
 	}
 	
 	public Camp(String name, List<Achievement> achievements) {
-		this.id = Camp.allCamps.size() + 1;
+		this.id = Main.allCamps.size() + 1;
 		this.name = name;
 		this.achievements = achievements;
-		allCamps.add(this);
+		Main.allCamps.add(this);
 		System.out.println("Camp created! " + this.toString());
 		saveCamps();
 	}
@@ -55,7 +54,7 @@ public class Camp {
 		this.id = id;
 		this.name = name;
 		this.achievements = achievements;
-		allCamps.add(this);
+		Main.allCamps.add(this);
 	}
 	
 	public String toString() {
@@ -67,7 +66,7 @@ public class Camp {
 		return str;
 	}
 	
-	public static Camp fromString(String str) {
+	public static void fromString(String str) {
 		String[] data = str.split("\\|");
 		String[] achieves = data[2].split(",");
 		
@@ -79,9 +78,7 @@ public class Camp {
 			achievements.add(Achievement.valueOf(s));
 		}
 		
-		Camp camp = new Camp(id, name, achievements);
-		
-		return camp;
+		new Camp(id, name, achievements);
 		
 	}
 	
@@ -91,7 +88,7 @@ public class Camp {
 			FileWriter fw = new FileWriter(f, false);
 			PrintWriter pw = new PrintWriter(fw, true);
 			
-			for(Camp c : allCamps) {
+			for(Camp c : Main.allCamps) {
 				pw.println(c.toString());
 			}
 			pw.close();
@@ -110,7 +107,6 @@ public class Camp {
 			while(scanner.hasNextLine()) {
 				str = scanner.nextLine();
 				Camp.fromString(str);
-				System.out.println(str);
 			}
 			scanner.close();
 		} catch (FileNotFoundException e) {
@@ -120,10 +116,10 @@ public class Camp {
 	
 	public static void deleteCamp(List<Integer> ids) {
 		for(Integer i : ids) {
-			allCamps.remove(i);
+			Main.allCamps.remove(i);
 		}
-		for(int i = 0; i < allCamps.size(); i++) {
-			allCamps.get(i).id = i+1;
+		for(int i = 0; i < Main.allCamps.size(); i++) {
+			Main.allCamps.get(i).id = i+1;
 		}
 	}
 }
