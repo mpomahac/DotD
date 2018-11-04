@@ -78,7 +78,7 @@
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnAddRaid" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Add raid" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Button fx:id="btnAddRaid" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#addRaid" text="Add raid" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>

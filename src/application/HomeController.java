@@ -2,6 +2,8 @@ package application;
 
 import java.io.IOException;
 
+import application.Raid.Size;
+import application.Raid.Type;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -39,6 +41,17 @@ public class HomeController {
 			window.setScene(new Scene(root));
 			window.show();
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void addRaid() {
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("AddRaid.fxml"));
+			window.setTitle("Add raid");
+			window.setScene(new Scene(root));
+			window.show();
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
