@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import application.Raid.Size;
 import application.Raid.Type;
@@ -49,7 +51,7 @@ public class AddRaidController implements Initializable {
 	public Button btnCancel;
 	public Button btnAPTiers;
 	
-	public Map<String, String> apValues = new HashMap<>();
+	public SortedMap<String, String> apValues = new TreeMap<>((v1, v2) -> Integer.valueOf(v1).compareTo(Integer.valueOf(v2)));
 	
 	public void submit() {
 		lNameErr.setVisible(false);
@@ -183,11 +185,14 @@ public class AddRaidController implements Initializable {
 		
 		btnAPTiers.setOnAction(e -> {
 			try {
+				APValuesBoxController.s = cbSize.getValue().toString();
 				apValues = APValuesBoxController.display(FXMLLoader.load(getClass().getResource("APValuesBox.fxml")), cbSize.getValue());
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 		});
+		
+		btnCancel.setOnAction(e -> HomeController.window.close());
 	}
 
 }

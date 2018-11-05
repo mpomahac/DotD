@@ -10,6 +10,8 @@ import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.Map.Entry;
 
 public class Raid {
@@ -35,7 +37,7 @@ public class Raid {
 	public BigDecimal fs;
 	public BigDecimal os;
 	public BigDecimal ms;
-	public Map<String, String> apValues = new HashMap<>();
+	public SortedMap<String, String> apValues = new TreeMap<>((v1, v2) -> Integer.valueOf(v1).compareTo(Integer.valueOf(v2)));
 	
 	public enum Size{
 		SMALL,
@@ -53,44 +55,48 @@ public class Raid {
 	}
 	
 	//Create from user input
-	public Raid(String name, Type type, Size size, String slots, String hp, String os, String ms, Map<String, String> apValues) {
+	public Raid(String name, Type type, Size size, String slots, String hp, String os, String ms, SortedMap<String, String> apValues) {
 		if(type.equals(Type.REGULAR)) {
-			this.id = (int) (1000 * (1 + size.ordinal()) + Main.allRaids.stream().filter(r -> r.size.equals(size) && r.type.equals(type)).count());
+			this.id = (int) (1000 * (1 + size.ordinal()) + Main.allRaids.stream().filter(r -> r.size.equals(size) && r.type.equals(type)).count() + 1);
 		}
 		else if(type.equals(Type.GUILD)) {
-			this.id = (int) (7000 + Main.allRaids.stream().filter(r -> r.type.equals(type)).count());
+			this.id = (int) (7000 + Main.allRaids.stream().filter(r -> r.type.equals(type)).count() + 1);
 		}
 		else {
-			this.id = (int) (7900 + Main.allRaids.stream().filter(r -> r.type.equals(type)).count());
+			this.id = (int) (7900 + Main.allRaids.stream().filter(r -> r.type.equals(type)).count() + 1);
 		}
 		
 		this.name = name;
-		this.hp = new BigDecimal(hp);
-		this.size = size;
+		this.hp = new BigDecimal(hp).setScale(2, RoundingMode.CEILING);
 		this.type = type;
+		this.size = size;
 		this.slots = new BigDecimal(slots);
 		this.fs = this.hp.divide(this.slots, 2, RoundingMode.CEILING);
 		this.ap = this.fs.divide(new BigDecimal("2"), 2, RoundingMode.CEILING);
-		this.os = new BigDecimal(os);
-		this.ms = new BigDecimal(ms);
+		this.os = new BigDecimal(os).setScale(2, RoundingMode.CEILING);
+		this.ms = new BigDecimal(ms).setScale(2, RoundingMode.CEILING);
 		this.apValues = apValues;
+		this.fs = this.fs.setScale(2, RoundingMode.CEILING);
+		this.ap = this.ap.setScale(2, RoundingMode.CEILING);
 		Main.allRaids.add(this);
 		Main.allRaids.sort((r1, r2) -> r1.id.compareTo(r2.id));
 		saveRaids();
+		/*Main.allRaids.clear();
+		loadRaids();*/
 	}
 	
 	//Read from file
-	public Raid(int id, String name, Type type, Size size, String slots, String hp, String ap, String fs, String os, String ms, Map<String, String> apValues) {
+	public Raid(int id, String name, Type type, Size size, String slots, String hp, String ap, String fs, String os, String ms, SortedMap<String, String> apValues) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.size = size;
 		this.slots = new BigDecimal(slots);
-		this.hp = new BigDecimal(hp);
-		this.ap = new BigDecimal(ap);
-		this.fs = new BigDecimal(fs);
-		this.os = new BigDecimal(os);
-		this.ms = new BigDecimal(ms);
+		this.hp = new BigDecimal(hp).setScale(2, RoundingMode.CEILING);
+		this.ap = new BigDecimal(ap).setScale(2, RoundingMode.CEILING);
+		this.fs = new BigDecimal(fs).setScale(2, RoundingMode.CEILING);
+		this.os = new BigDecimal(os).setScale(2, RoundingMode.CEILING);
+		this.ms = new BigDecimal(ms).setScale(2, RoundingMode.CEILING);
 		this.apValues = apValues;
 		Main.allRaids.add(this);
 		Main.allRaids.sort((r1, r2) -> r1.id.compareTo(r2.id));
@@ -129,7 +135,7 @@ public class Raid {
 		String fs = longValue(data[7]);
 		String os = longValue(data[8]);
 		String ms = longValue(data[9]);
-		Map<String, String> apValues = new HashMap<>();
+		SortedMap<String, String> apValues = new TreeMap<>((v1, v2) -> Integer.valueOf(v1).compareTo(Integer.valueOf(v2)));
 		
 		for(String s : apPairs) {
 			String[] pair = s.split(" ");
@@ -170,10 +176,8 @@ public class Raid {
 		value = value.replaceAll("\\,", ".");
 		
 		if(value.matches(".*[kmbtqQ]$")) {
-			System.out.println("Matched with k");
 			suffix = value.substring(value.length()-1);
 			value = value.replaceAll("[kmbtqQ]", "");
-			System.out.println("Removed k: " + value);
 			
 			int decPlaces = 0;
 			
@@ -208,7 +212,6 @@ public class Raid {
 			for(int i = 0; i < addZeros; i++) {
 				val += "0";
 			}
-			System.out.println("Value after load: " + val);
 		}
 		else {
 			if(value.contains(".")) {

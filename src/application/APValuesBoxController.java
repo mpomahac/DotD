@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,7 +34,9 @@ public class APValuesBoxController implements Initializable {
 			"500",
 			"1000",
 			"2000",
-			"2500"
+			"2500",
+			"5000",
+			"N/A"
 	};
 	
 	private static String[] aps = {
@@ -43,7 +48,8 @@ public class APValuesBoxController implements Initializable {
 		"250",
 		"500",
 		"1000",
-		"2000"
+		"2000",
+		"N/A"
 	};
 	
 	private static ObservableList<String> killValues;
@@ -73,20 +79,27 @@ public class APValuesBoxController implements Initializable {
 	public Button btnSubmit;
 	public Button btnCancel;
 	
-	static Map<String, String> apValues = new HashMap<>();
+	static SortedMap<String, String> apValues = new TreeMap<>((v1, v2) -> Integer.valueOf(v1).compareTo(Integer.valueOf(v2)));
 	
-	static List<ChoiceBox<String>> cbAp = new ArrayList<>();
-	static List<ChoiceBox<String>> cbKill = new ArrayList<>();
+	List<ChoiceBox<String>> cbAp = new ArrayList<>();
+	List<ChoiceBox<String>> cbKill = new ArrayList<>();
+	
+	public static String s = "";
 	
 	static Stage window = new Stage();
+	static {
+		window.initModality(Modality.APPLICATION_MODAL);
+	}
 	
-	public static Map<String, String> display(Parent root, String size) {
+	public static SortedMap<String, String> display(Parent root, String size) {
 		window.setTitle("Raid AP Values");
 		window.setScene(new Scene(root));
-		window.initModality(Modality.APPLICATION_MODAL);
 		window.showAndWait();
 		
-		return apValues;
+		SortedMap<String, String> apVals = new TreeMap<>((v1, v2) -> Integer.valueOf(v1).compareTo(Integer.valueOf(v2)));
+		apVals.putAll(apValues);
+		
+		return apVals;
 	}
 
 	@Override
@@ -108,30 +121,139 @@ public class APValuesBoxController implements Initializable {
 		cbKill.add(cbKillTier6);
 		cbKill.add(cbKillTier7);
 		
+		apValues.clear();
+		
 		for(int i = 0; i < 7; i++) {
-			if(i == 6) {
-				apTiers.add("N/A");
-				killValues.add("N/A");
-			}
 			ChoiceBox<String> cb = new ChoiceBox<>();
 			cb = cbAp.get(i);
 			cb.setItems(apTiers);
-			cb.setValue(apTiers.get(0));
+			cb.setValue(apTiers.get(i));
 			cb = cbKill.get(i);
 			cb.setItems(killValues);
-			cb.setValue(killValues.get(0));
+			cb.setValue(killValues.get(i));
+		}
+		
+		cbAp.get(0).getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+			int newIndex = apTiers.indexOf(newValue) + 1;
+			if(newIndex > apTiers.size() - 1) newIndex = apTiers.size() - 1;
+			cbAp.get(1).setValue(apTiers.get(newIndex));
+		});
+		cbAp.get(1).getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+			int newIndex = apTiers.indexOf(newValue) + 1;
+			if(newIndex > apTiers.size() - 1) newIndex = apTiers.size() - 1;
+			cbAp.get(2).setValue(apTiers.get(newIndex));
+		});
+		cbAp.get(2).getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+			int newIndex = apTiers.indexOf(newValue) + 1;
+			if(newIndex > apTiers.size() - 1) newIndex = apTiers.size() - 1;
+			cbAp.get(3).setValue(apTiers.get(newIndex));
+		});
+		cbAp.get(3).getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+			int newIndex = apTiers.indexOf(newValue) + 1;
+			if(newIndex > apTiers.size() - 1) newIndex = apTiers.size() - 1;
+			cbAp.get(4).setValue(apTiers.get(newIndex));
+		});
+		cbAp.get(4).getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+			int newIndex = apTiers.indexOf(newValue) + 1;
+			if(newIndex > apTiers.size() - 1) newIndex = apTiers.size() - 1;
+			cbAp.get(5).setValue(apTiers.get(newIndex));
+		});
+		cbAp.get(5).getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+			int newIndex = apTiers.indexOf(newValue) + 1;
+			if(newIndex > apTiers.size() - 1) newIndex = apTiers.size() - 1;
+			cbAp.get(6).setValue(apTiers.get(newIndex));
+		});
+		
+		cbKill.get(0).getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+			int newIndex = killValues.indexOf(newValue) + 1;
+			if(newIndex > killValues.size() - 1) newIndex = killValues.size() - 1;
+			cbKill.get(1).setValue(killValues.get(newIndex));
+		});
+		cbKill.get(1).getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+			int newIndex = killValues.indexOf(newValue) + 1;
+			if(newIndex > killValues.size() - 1) newIndex = killValues.size() - 1;
+			cbKill.get(2).setValue(killValues.get(newIndex));
+		});
+		cbKill.get(2).getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+			int newIndex = killValues.indexOf(newValue) + 1;
+			if(newIndex > killValues.size() - 1) newIndex = killValues.size() - 1;
+			cbKill.get(3).setValue(killValues.get(newIndex));
+		});
+		cbKill.get(3).getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+			int newIndex = killValues.indexOf(newValue) + 1;
+			if(newIndex > killValues.size() - 1) newIndex = killValues.size() - 1;
+			cbKill.get(4).setValue(killValues.get(newIndex));
+		});
+		cbKill.get(4).getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+			int newIndex = killValues.indexOf(newValue) + 1;
+			if(newIndex > killValues.size() - 1) newIndex = killValues.size() - 1;
+			cbKill.get(5).setValue(killValues.get(newIndex));
+		});
+		cbKill.get(5).getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+			int newIndex = killValues.indexOf(newValue) + 1;
+			if(newIndex > killValues.size() - 1) newIndex = killValues.size() - 1;
+			cbKill.get(6).setValue(killValues.get(newIndex));
+		});
+		
+		if(s.equals("Small")) {
+			cbKill.get(0).setValue(killValues.get(1));
+			cbKill.get(1).setValue(killValues.get(3));
+			cbKill.get(2).setValue(killValues.get(4));
+			cbKill.get(3).setValue(killValues.get(6));
+			cbKill.get(4).setValue(killValues.get(7));
+			cbKill.get(5).setValue(killValues.get(8));
+			cbKill.get(6).setValue(killValues.get(11));
+			
+			cbAp.get(0).setValue(apTiers.get(1));
+			cbAp.get(1).setValue(apTiers.get(2));
+			cbAp.get(2).setValue(apTiers.get(3));
+			cbAp.get(3).setValue(apTiers.get(4));
+			cbAp.get(4).setValue(apTiers.get(5));
+			cbAp.get(5).setValue(apTiers.get(6));
+			cbAp.get(6).setValue(apTiers.get(7));
+		}
+		else if(s.equals("Medium")) {
+			cbKill.get(0).setValue(killValues.get(1));
+			cbKill.get(1).setValue(killValues.get(3));
+			cbKill.get(2).setValue(killValues.get(4));
+			cbKill.get(3).setValue(killValues.get(6));
+			cbKill.get(4).setValue(killValues.get(7));
+			cbKill.get(5).setValue(killValues.get(8));
+			cbKill.get(6).setValue(killValues.get(11));
+			
+			cbAp.get(0).setValue(apTiers.get(2));
+			cbAp.get(1).setValue(apTiers.get(3));
+			cbAp.get(2).setValue(apTiers.get(4));
+			cbAp.get(3).setValue(apTiers.get(5));
+			cbAp.get(4).setValue(apTiers.get(6));
+			cbAp.get(5).setValue(apTiers.get(7));
+			cbAp.get(6).setValue(apTiers.get(8));
+		}
+		else {
+			cbKill.get(0).setValue(killValues.get(1));
+			cbKill.get(1).setValue(killValues.get(3));
+			cbKill.get(2).setValue(killValues.get(4));
+			cbKill.get(3).setValue(killValues.get(6));
+			cbKill.get(4).setValue(killValues.get(7));
+			cbKill.get(5).setValue(killValues.get(8));
+			cbKill.get(6).setValue(killValues.get(11));
+			
+			cbAp.get(0).setValue(apTiers.get(3));
+			cbAp.get(1).setValue(apTiers.get(4));
+			cbAp.get(2).setValue(apTiers.get(5));
+			cbAp.get(3).setValue(apTiers.get(6));
+			cbAp.get(4).setValue(apTiers.get(7));
+			cbAp.get(5).setValue(apTiers.get(8));
+			cbAp.get(6).setValue(apTiers.get(8));
 		}
 		
 		btnSubmit.setOnAction(e -> {
-			if(cbAp.get(6).getValue().equals("N/A") || cbKill.get(6).getValue().equals("N/A")) {
-				for(int i = 0; i < 6; i++) {
-					apValues.put(cbKill.get(i).getValue(), cbAp.get(i).getValue());
-				}
-			}
-			else {
-				for(int i = 0; i < 7; i++) {
-					apValues.put(cbKill.get(i).getValue(), cbAp.get(i).getValue());
-				}
+			
+			int i = 0;
+			while(i < 7) {
+				if(cbAp.get(i).getValue().equals("N/A") || cbKill.get(i).getValue().equals("N/A")) break;
+				apValues.put(cbKill.get(i).getValue(), cbAp.get(i).getValue());
+				i++;
 			}
 			window.close();
 		});

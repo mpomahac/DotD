@@ -26,7 +26,7 @@ public class Main extends Application{
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception{
-		///*
+		/*
 		//TESTS
 		BigDecimal test = new BigDecimal("1020.3523");
 		System.out.println(test.toString());
@@ -69,14 +69,20 @@ public class Main extends Application{
 		
 		//TESTS END
 		
-		//*/
+		*/
+		long start = System.currentTimeMillis();
 		Camp.loadCamps();
+		System.out.println("Camp loading time: " + (System.currentTimeMillis() - start) + "ms");
+		start = System.currentTimeMillis();
 		Raid.loadRaids();
+		System.out.println("Raid loading time: " + (System.currentTimeMillis() - start) + "ms");
 		
+		start = System.currentTimeMillis();
 		Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));
 		window = primaryStage;
 		window.setTitle("DotD Tools");
 		window.setScene(new Scene(root));
 		window.show();
+		System.out.println("Main window loading time: " + (System.currentTimeMillis() - start) + "ms");
 	}
 }
