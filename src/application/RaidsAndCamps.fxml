@@ -1,8 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
-</BorderPane>
 
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <center>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="273.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="273.0" minHeight="5.0" prefHeight="55.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="550.0" minHeight="10.0" prefHeight="461.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ChoiceBox prefWidth="150.0" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets left="40.0" />
+               </GridPane.margin>
+            </ChoiceBox>
+            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="2" GridPane.valignment="TOP">
+              <tabs>
+                <Tab text="Raids">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <columns>
+                                  <TableColumn prefWidth="58.0" text="ID" />
+                                  <TableColumn prefWidth="430.0" text="Raid name" />
+                                    <TableColumn prefWidth="58.0" text="Kill" />
+                                    <TableColumn prefWidth="58.0" text="Goal" />
+                                    <TableColumn prefWidth="58.0" text="Left" />
+                                    <TableColumn prefWidth="58.0" text="AP" />
+                                    <TableColumn text="Value" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Camps">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <columns>
+                                    <TableColumn prefWidth="58.0" text="ID" />
+                                    <TableColumn prefWidth="300.0" text="Camp name" />
+                                    <TableColumn prefWidth="136.0" text="Achievement" />
+                                    <TableColumn prefWidth="58.0" text="Kill" />
+                                    <TableColumn prefWidth="58.0" text="Goal" />
+                                    <TableColumn prefWidth="58.0" text="Left" />
+                                    <TableColumn prefWidth="58.0" text="AP" />
+                                    <TableColumn prefWidth="74.0" text="Value" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+            <Label text="Raids" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
+   </center>
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+            <Menu fx:id="menuHome" mnemonicParsing="false" text="Home" />
+            <Menu fx:id="menuRaidCamp" mnemonicParsing="false" text="Raids/Camps" />
+            <Menu fx:id="menuWar" mnemonicParsing="false" text="War Tracker" />
+            <Menu fx:id="menuLandCalc" mnemonicParsing="false" text="Land Calculator" />
+            <Menu fx:id="menuLogFilter" mnemonicParsing="false" text="Raid Log Filter" />
+        </menus>
+      </MenuBar>
+   </top>
+</BorderPane>

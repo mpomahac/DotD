@@ -1,12 +1,11 @@
 package application;
 	
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TreeMap;
 
-import application.Raid.Size;
-import application.Raid.Type;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,6 +18,8 @@ public class Main extends Application{
 	public static Stage window;
 	public static List<Camp> allCamps = new ArrayList<>();
 	public static List<Raid> allRaids = new ArrayList<>();
+	public static List<Character> allChars = new ArrayList<>();
+	public static War war;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -63,19 +64,23 @@ public class Main extends Application{
 		
 		System.out.println(value.replaceAll("[kmbtqQ]", ""));
 		
-		
-		
+		*/
 		
 		
 		//TESTS END
 		
-		*/
 		long start = System.currentTimeMillis();
 		Camp.loadCamps();
 		System.out.println("Camp loading time: " + (System.currentTimeMillis() - start) + "ms");
 		start = System.currentTimeMillis();
 		Raid.loadRaids();
 		System.out.println("Raid loading time: " + (System.currentTimeMillis() - start) + "ms");
+		start = System.currentTimeMillis();
+		Character.loadCharacters();
+		System.out.println("Character loading time: " + (System.currentTimeMillis() - start) + "ms");
+		start = System.currentTimeMillis();
+		War.loadWar();
+		System.out.println("War loading time: " + (System.currentTimeMillis() - start) + "ms");
 		
 		start = System.currentTimeMillis();
 		Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));

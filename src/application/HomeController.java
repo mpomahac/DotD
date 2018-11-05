@@ -2,8 +2,6 @@ package application;
 
 import java.io.IOException;
 
-import application.Raid.Size;
-import application.Raid.Type;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -33,6 +31,51 @@ public class HomeController {
 	static{
 		window.initModality(Modality.APPLICATION_MODAL);
 	}
+
+	
+	public void addChar() {
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("AddChar.fxml"));
+			window.setTitle("Add character");
+			window.setScene(new Scene(root));
+			window.show();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteChar() {
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("DeleteChar.fxml"));
+			window.setTitle("Delete character");
+			window.setScene(new Scene(root));
+			window.show();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void addRaid() {
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("AddRaid.fxml"));
+			window.setTitle("Add raid");
+			window.setScene(new Scene(root));
+			window.show();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteRaid() {
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("DeleteRaid.fxml"));
+			window.setTitle("Delete raid");
+			window.setScene(new Scene(root));
+			window.show();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public void addCamp() {
 		try {
@@ -45,13 +88,24 @@ public class HomeController {
 		}
 	}
 	
-	public void addRaid() {
+	public void deleteCamp() {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("AddRaid.fxml"));
-			window.setTitle("Add raid");
+			Parent root = FXMLLoader.load(getClass().getResource("DeleteCamp.fxml"));
+			window.setTitle("Delete campaign");
 			window.setScene(new Scene(root));
 			window.show();
-		} catch(IOException e) {
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void startWar() {
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("StartWar.fxml"));
+			window.setTitle("Start war");
+			window.setScene(new Scene(root));
+			window.show();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
