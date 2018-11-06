@@ -6,17 +6,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class Camp {
 	
-	public static final Map<String, String> apTiers;
+	public static final SortedMap<String, String> apTiers;
 	static
 	{
-		apTiers = new HashMap<>();
+		apTiers = new TreeMap<>((v1, v2) -> Integer.valueOf(v1).compareTo(Integer.valueOf(v2)));
 		apTiers.put("1", "25");
 		apTiers.put("5", "50");
 		apTiers.put("10", "100");

@@ -1,5 +1,8 @@
 package application;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class RaidTableEntry {
 
 	private int id;
@@ -8,7 +11,7 @@ public class RaidTableEntry {
 	private String goal;
 	private String left;
 	private String ap;
-	private double value;
+	private BigDecimal value;
 	
 	public RaidTableEntry() {
 		this.id = 0;
@@ -17,7 +20,7 @@ public class RaidTableEntry {
 		this.goal = "0";
 		this.left = "0";
 		this.ap = "0";
-		this.value = 0.0;
+		this.value = new BigDecimal("0.0");
 	}
 	
 	public RaidTableEntry(Raid r, Character c) {
@@ -39,7 +42,7 @@ public class RaidTableEntry {
 		
 		this.left = String.valueOf(Integer.valueOf(this.goal) - Integer.valueOf(this.killed));
 		
-		this.value = Double.valueOf(this.ap) / Double.valueOf(this.left);
+		this.value = new BigDecimal(Double.valueOf(this.ap) / Double.valueOf(this.left)).setScale(2, RoundingMode.CEILING);
 	}
 
 	public int getId() {
@@ -90,11 +93,11 @@ public class RaidTableEntry {
 		this.ap = ap;
 	}
 
-	public double getValue() {
+	public BigDecimal getValue() {
 		return value;
 	}
 
-	public void setValue(double value) {
+	public void setValue(BigDecimal value) {
 		this.value = value;
 	}
 	

@@ -1,11 +1,13 @@
 package application;
 
-import java.util.Map.Entry;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -26,7 +28,7 @@ public class Character {
 		}
 		for(Camp c : Main.allCamps) {
 			for(Achievement a : c.achievements) {
-				campKills.put(Integer.valueOf(c.id*100 + a.ordinal()).toString(), "0");
+				campKills.put(Integer.valueOf(c.id*10 + a.ordinal()).toString(), "0");
 			}
 		}
 		
@@ -39,6 +41,47 @@ public class Character {
 		this.name = name;
 		this.raidKills = raidKills;
 		this.campKills = campKills;
+		
+		List<String> raidIds = new ArrayList<>();
+		List<String> campIds = new ArrayList<>();
+		
+		for(Raid r : Main.allRaids) {
+			raidIds.add(r.id.toString());
+			if(!this.raidKills.containsKey(r.id.toString())) {
+				this.raidKills.put(r.id.toString(), "0");
+			}
+		}
+		
+		for(Camp c : Main.allCamps) {
+			for(Achievement a : c.achievements) {
+				campIds.add(String.valueOf(10 * c.id + a.ordinal()));
+				if(!this.campKills.containsKey(String.valueOf(10 * c.id + a.ordinal()))) {
+					this.campKills.put(String.valueOf(10 * c.id + a.ordinal()), "0");
+				}
+			}
+		}
+		
+		if(this.raidKills.size() > Main.allRaids.size()) {
+			List<String> rIds = new ArrayList<>();
+			rIds.addAll(this.raidKills.keySet());
+			for(String s : rIds) {
+				if(!raidIds.contains(s)) {
+					this.raidKills.remove(s);
+				}
+				if(this.raidKills.size() == Main.allRaids.size()) break;
+			}
+		}
+		
+		if(this.campKills.size() > Main.allCamps.size()) {
+			List<String> cIds = new ArrayList<>();
+			cIds.addAll(this.campKills.keySet());
+			for(String s : cIds) {
+				if(!campIds.contains(s)) {
+					this.campKills.remove(s);
+				}
+				if(this.campKills.size() == Main.allCamps.size()) break;
+			}
+		}
 
 		Main.allChars.add(this);
 		saveCharacters();
@@ -90,7 +133,7 @@ public class Character {
 	
 	public static void saveCharacters() {
 		File f = new File("./chars.dat");
-		try {
+		try {			
 			FileWriter fw = new FileWriter(f, false);
 			PrintWriter pw = new PrintWriter(fw, true);
 			
@@ -112,7 +155,10 @@ public class Character {
 			
 			while(scanner.hasNextLine()) {
 				str = scanner.nextLine();
-				Character.fromString(str);
+				String[] data = str.split("\\|");
+				if(data.length == 3) {
+					Character.fromString(str);
+				}
 			}
 			scanner.close();
 		} catch (FileNotFoundException e) {
@@ -120,5 +166,8 @@ public class Character {
 		}
 	}
 	
-	
+	public static void reloadCharacters() {
+		Main.allChars.clear();
+		loadCharacters();
+	}
 }

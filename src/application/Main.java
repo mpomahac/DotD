@@ -1,10 +1,7 @@
 package application;
 	
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TreeMap;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -81,6 +78,7 @@ public class Main extends Application{
 		start = System.currentTimeMillis();
 		War.loadWar();
 		System.out.println("War loading time: " + (System.currentTimeMillis() - start) + "ms");
+		
 		
 		start = System.currentTimeMillis();
 		Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));
