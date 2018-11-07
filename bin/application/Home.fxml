@@ -142,11 +142,6 @@
                      <children>
                         <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <ChoiceBox fx:id="cbCharRaidCamp" prefWidth="150.0" GridPane.valignment="CENTER">
-                                 <GridPane.margin>
-                                    <Insets left="10.0" />
-                                 </GridPane.margin>
-                              </ChoiceBox>
                               <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1" GridPane.valignment="TOP">
                                  <tabs>
                                     <Tab text="Raids">
@@ -190,6 +185,51 @@
                                     </Tab>
                                  </tabs>
                               </TabPane>
+                              <GridPane>
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <ChoiceBox fx:id="cbCharRaidCamp" prefWidth="150.0">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" />
+                                       </GridPane.margin>
+                                    </ChoiceBox>
+                                    <Label fx:id="lAP" text="Label" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="20.0" />
+                                       </font>
+                                       <GridPane.margin>
+                                          <Insets bottom="20.0" left="50.0" />
+                                       </GridPane.margin></Label>
+                                    <Label fx:id="lOS" text="Label" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="20.0" />
+                                       </font>
+                                       <GridPane.margin>
+                                          <Insets left="50.0" top="20.0" />
+                                       </GridPane.margin></Label>
+                                    <Label fx:id="lFS" text="Label" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="20.0" />
+                                       </font>
+                                       <GridPane.margin>
+                                          <Insets bottom="20.0" left="50.0" />
+                                       </GridPane.margin></Label>
+                                    <Label fx:id="lMS" text="Label" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="20.0" />
+                                       </font>
+                                       <GridPane.margin>
+                                          <Insets left="50.0" top="20.0" />
+                                       </GridPane.margin></Label>
+                                 </children>
+                              </GridPane>
                            </children>
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

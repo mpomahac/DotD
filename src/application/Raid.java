@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.SortedMap;
@@ -81,6 +83,8 @@ public class Raid {
 		Main.allRaids.add(this);
 		Main.allRaids.sort((r1, r2) -> r1.id.compareTo(r2.id));
 		saveRaids();
+		System.out.println("Raid update!");
+		HomeController.raidsUpdated = true;
 		/*Main.allRaids.clear();
 		loadRaids();*/
 	}
@@ -145,25 +149,25 @@ public class Raid {
 		new Raid(id, name, type, size, slots, hp, ap, fs, os, ms, apValues);
 	}
 	
-	private String shortValue(BigDecimal value) {
+	public String shortValue(BigDecimal value) {
 		String val = "";
 		if(value.compareTo(numbers.get("k")) == -1) {
 			val = value.toString();
 		}
 		else if(value.compareTo(numbers.get("m")) == -1) {
-			val = value.divide(numbers.get("k")).toString() + "k";
+			val = value.divide(numbers.get("k")).setScale(2, RoundingMode.CEILING).toString() + "k";
 		}
 		else if(value.compareTo(numbers.get("b")) == -1) {
-			val = value.divide(numbers.get("m")).toString() + "m";
+			val = value.divide(numbers.get("m")).setScale(2, RoundingMode.CEILING).toString() + "m";
 		}
 		else if(value.compareTo(numbers.get("t")) == -1) {
-			val = value.divide(numbers.get("b")).toString() + "b";
+			val = value.divide(numbers.get("b")).setScale(2, RoundingMode.CEILING).toString() + "b";
 		}
 		else if(value.compareTo(numbers.get("q")) == -1) {
-			val = value.divide(numbers.get("t")).toString() + "t";
+			val = value.divide(numbers.get("t")).setScale(2, RoundingMode.CEILING).toString() + "t";
 		}
 		else if(value.compareTo(numbers.get("Q")) == -1) {
-			val = value.divide(numbers.get("q")).toString() + "q";
+			val = value.divide(numbers.get("q")).setScale(2, RoundingMode.CEILING).toString() + "q";
 		}
 		
 		return val;
@@ -255,5 +259,40 @@ public class Raid {
 		}
 	}
 	
+	public static void reloadRaids() {
+		Main.allRaids.clear();
+		loadRaids();
+	}
+	
+	public static void deleteRaids(List<Integer> ids) {
+		
+		List<Raid> raids = new ArrayList<>();
+		raids.addAll(Main.allRaids);
+		
+		
+		
+		for(Integer id : ids) {
+			for(Raid r : raids) {
+				if(r.id.equals(id)) {
+					Main.allRaids.remove(r);
+				}
+			}
+		}
+		
+		for(Raid r : Main.allRaids) {
+			if(r.type.equals(Type.REGULAR)) {
+				r.id = (int) (1000 * (1 + r.size.ordinal()) + Main.allRaids.stream().filter(ra -> ra.size.equals(r.size) && ra.type.equals(r.type) && ra.id < r.id).count() + 1);
+			}
+			else if(r.type.equals(Type.GUILD)) {
+				r.id = (int) (7000 + Main.allRaids.stream().filter(ra -> ra.type.equals(r.type) && ra.id < r.id).count() + 1);
+			}
+			else {
+				r.id = (int) (7900 + Main.allRaids.stream().filter(ra -> ra.type.equals(r.type) && ra.id < r.id).count() + 1);
+			}
+		}
+		saveRaids();
+		reloadRaids();
+		Character.reloadCharacters();
+	}
 	
 }

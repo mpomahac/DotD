@@ -1,5 +1,6 @@
 package application;
 	
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,13 +80,24 @@ public class Main extends Application{
 		War.loadWar();
 		System.out.println("War loading time: " + (System.currentTimeMillis() - start) + "ms");
 		
-		
 		start = System.currentTimeMillis();
 		Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));
 		window = primaryStage;
+		window.setOnCloseRequest(e -> {
+			e.consume();
+			boolean result = ConfirmBox.display("Close program?", "Are you sure you want to close the program?");
+			if(result) {
+				closeProgram();
+			}
+		});
 		window.setTitle("DotD Tools");
 		window.setScene(new Scene(root));
 		window.show();
 		System.out.println("Main window loading time: " + (System.currentTimeMillis() - start) + "ms");
+	}
+	
+	private void closeProgram() {
+		HomeController.threadRun = false;
+		window.close();
 	}
 }

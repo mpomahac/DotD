@@ -128,7 +128,7 @@ public class AddRaidController implements Initializable {
 		
 		if(value.matches(".*[kmbtqQ]$")) {
 			suffix = value.substring(value.length()-1);
-			value = value.replaceAll("k|m|b|t|q|Q", "");
+			value = value.replaceAll("[kmbtqQ]", "");
 			
 			
 			int decPlaces = 0;

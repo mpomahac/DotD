@@ -4,11 +4,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
-
-import javax.swing.text.ChangedCharSetException;
 
 import application.Camp.Achievement;
 import javafx.collections.FXCollections;
@@ -19,10 +15,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TreeItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Modality;
@@ -30,6 +26,11 @@ import javafx.stage.Stage;
 
 public class HomeController implements Initializable{
 
+	public Label lAP;
+	public Label lFS;
+	public Label lOS;
+	public Label lMS;
+	
 	public Button btnAddChar;
 	public Button btnDeleteChar;
 	public Button btnAddRaid;
@@ -74,21 +75,38 @@ public class HomeController implements Initializable{
 	
 	public Character chara = null;
 	
+	public static boolean raidsUpdated = false;
+	public static boolean threadRun = true;
+	public static boolean threadIsRunning = true;
+	
 	private Thread t = new Thread() {
 		public void run() {
-			while(true) {
-				System.out.println("Reloading and refreshing");
-				Character.reloadCharacters();
-				tRaids.setItems(getRaids());
-				tRaids.refresh();
-				tCamps.setItems(getCamps());
-				tCamps.refresh();
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+			while(threadRun) {
+				if(raidsUpdated) {
+					System.out.println("Reloading and refreshing");
+					Character.reloadCharacters();
+					tRaids.setItems(getRaids());
+					tRaids.refresh();
+					tCamps.setItems(getCamps());
+					tCamps.refresh();
+					System.out.println("Raid info update complete");
+					raidsUpdated = false;
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				else {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 			}
+			threadIsRunning = false;
+			System.out.println("Thread stopped");
 		}
 	};
 	
@@ -98,6 +116,11 @@ public class HomeController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		t.start();
+		
+		lAP.setVisible(false);
+		lFS.setVisible(false);
+		lOS.setVisible(false);
+		lMS.setVisible(false);
 		
 		cbCharRaidCamp.setItems(chars);
 		cbCharRaidCamp.setValue(chars.get(0));
@@ -125,6 +148,25 @@ public class HomeController implements Initializable{
 		
 		tCamps.setItems(getCamps());
 		
+		tRaids.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) ->{
+			if(newValue != null) {
+				Raid raid = null;
+				for(Raid r : Main.allRaids) {
+					if(r.id.equals(newValue.getId())) {
+						raid = r;
+					}
+				}
+				lAP.setText("AP: " + raid.shortValue(raid.ap));
+				lAP.setVisible(true);
+				lFS.setText("FS: " + raid.shortValue(raid.fs));
+				lFS.setVisible(true);
+				lOS.setText("OS: " + raid.shortValue(raid.os));
+				lOS.setVisible(true);
+				lMS.setText("MS: " + raid.shortValue(raid.ms));
+				lMS.setVisible(true);
+			}
+		});
+		
 		tRaids.setOnKeyPressed(key -> {
 			final RaidTableEntry item = tRaids.getSelectionModel().getSelectedItem();
 			if(item != null) {
@@ -147,6 +189,23 @@ public class HomeController implements Initializable{
 			}
 			tRaids.refresh();
 			Character.saveCharacters();
+		});
+		
+		tCamps.setRowFactory(tv -> {
+			TableRow<CampTableEntry> tr = new TableRow<>();
+			tr.setOnMouseClicked(e -> {
+				if(e.getClickCount() == 1) {
+					lAP.setText("");
+					lAP.setVisible(false);
+					lFS.setText("");
+					lFS.setVisible(false);
+					lOS.setText("");
+					lOS.setVisible(false);
+					lMS.setText("");
+					lMS.setVisible(false);
+				}
+			});
+			return tr;
 		});
 		
 		tCamps.setOnKeyPressed(key -> {
@@ -349,10 +408,7 @@ public class HomeController implements Initializable{
 	
 	public void saveAndQuit() {
 		if(ConfirmBox.display("Are you sure?", "Are you sure you want to save and quit?")) {
-			//Save data
-			
-			
-			//Close
+			threadRun = false;
 			Main.window.close();
 		}
 	}

@@ -170,4 +170,12 @@ public class Character {
 		Main.allChars.clear();
 		loadCharacters();
 	}
+	
+	public static void deleteCharacters(List<Integer> ids) {
+		for(Integer id : ids) {
+			Main.allChars.remove(id.intValue());
+		}
+		saveCharacters();
+		reloadCharacters();
+	}
 }

@@ -114,12 +114,12 @@ public class Camp {
 		}
 	}
 	
+	public static void reloadCamps() {
+		Main.allCamps.clear();
+		loadCamps();
+	}
+	
 	public static void deleteCamp(List<Integer> ids) {
-		for(Integer i : ids) {
-			Main.allCamps.remove(i);
-		}
-		for(int i = 0; i < Main.allCamps.size(); i++) {
-			Main.allCamps.get(i).id = i+1;
-		}
+		
 	}
 }
