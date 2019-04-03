@@ -2,7 +2,7 @@
 
 	<Properties>
 		<Property name="LS">${sys:file.separator}</Property>
-		<Property name="log_folder">C:/Users/emroamp/Documents/workspace-sts-3.9.6.RELEASE/DotD/logs</Property>
+		<Property name="log_folder">C:/Pomahac/DotD/logs</Property>
 	</Properties>
 	
 	<Appenders>
