@@ -1,9 +1,10 @@
-package application;
+package hr.mpomahac.dotd.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import application.Camp.Achievement;
+import hr.mpomahac.dotd.models.Camp;
+import hr.mpomahac.dotd.models.Camp.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;

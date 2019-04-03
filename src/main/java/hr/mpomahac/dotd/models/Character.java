@@ -1,4 +1,4 @@
-package application;
+package hr.mpomahac.dotd.models;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,13 +8,22 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import hr.mpomahac.dotd.controllers.Main;
+import hr.mpomahac.dotd.models.Camp.Achievement;
+
 import java.util.Scanner;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import application.Camp.Achievement;
-
 public class Character {
+	
+	private static final Logger LOGGER = LogManager.getLogger("resourceLogger");
+	
+	public static String FILE;
 	
 	public String name;
 	public SortedMap<String, String> raidKills = new TreeMap<>((k1, k2) -> Integer.valueOf(k1).compareTo(Integer.valueOf(k2)));
@@ -128,11 +137,13 @@ public class Character {
 			cKills.put(pair[0], pair[1]);
 		}
 		
+		LOGGER.info("Loaded character " + name);
+		
 		new Character(name, rKills, cKills);
 	}
 	
 	public static void saveCharacters() {
-		File f = new File("./chars.dat");
+		File f = new File(FILE);
 		try {			
 			FileWriter fw = new FileWriter(f, false);
 			PrintWriter pw = new PrintWriter(fw, true);
@@ -148,13 +159,17 @@ public class Character {
 	}
 	
 	public static void loadCharacters() {
-		File f = new File("./chars.dat");
+		LOGGER.info("************************************************");
+		LOGGER.info("LOADING CHARACTERS FROM " + FILE + " FILE.");
+		LOGGER.info("************************************************");
+		File f = new File(FILE);
 		try {
 			Scanner scanner = new Scanner(f);
 			String str;
 			
 			while(scanner.hasNextLine()) {
 				str = scanner.nextLine();
+				LOGGER.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 				String[] data = str.split("\\|");
 				if(data.length == 3) {
 					Character.fromString(str);
@@ -164,6 +179,7 @@ public class Character {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		LOGGER.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 	
 	public static void reloadCharacters() {

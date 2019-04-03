@@ -1,12 +1,25 @@
-package application;
+package hr.mpomahac.dotd.controllers;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
+import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
-import application.Camp.Achievement;
+import hr.mpomahac.dotd.models.Camp;
+import hr.mpomahac.dotd.models.CampTableEntry;
+import hr.mpomahac.dotd.models.Character;
+import hr.mpomahac.dotd.models.Raid;
+import hr.mpomahac.dotd.models.RaidTableEntry;
+import hr.mpomahac.dotd.models.War;
+import hr.mpomahac.dotd.models.Camp.Achievement;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -16,20 +29,57 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class HomeController implements Initializable{
+	
+	public static Stage window = new Stage();
+	public static boolean raidsUpdated = false;
+	public static boolean threadRun = true;
+	public static boolean threadIsRunning = true;
+	
+	private static ObservableList<String> chars;
+	
+	static{
+		window.initModality(Modality.APPLICATION_MODAL);
+		chars = FXCollections.observableArrayList();
+		for(Character c : Main.allChars) {
+			chars.add(c.name);
+		}
+	}
 
 	public Label lAP;
 	public Label lFS;
 	public Label lOS;
 	public Label lMS;
+	public Label lWarTitle;
+	public Label lWarTimer;
+	public Label lPersT1;
+	public Label lPersT2;
+	public Label lPersT3;
+	public Label lPersT4;
+	public Label lPersT5;
+	public Label lPersT6;
+	public Label lPersT7;
+	public Label lPersT8;
+	public Label lPersT9;
+	public Label lPersT10;
+	public Label lPersTExpec;
+	public Label lPersProgress;
+	public Label lCommT1;
+	public Label lCommT2;
+	public Label lCommT3;
+	public Label lCommT4;
+	public Label lCommTExpec;
+	public Label lCommProgress;
 	
 	public Button btnAddChar;
 	public Button btnDeleteChar;
@@ -39,9 +89,16 @@ public class HomeController implements Initializable{
 	public Button btnDeleteCamp;
 	public Button btnStartWar;
 	public Button btnSaveAndQuit;
+	public Button btnRefreshWar;
+	
+	public ProgressBar progBarPersContri;
+	public ProgressBar progBarCommContri;
+	public ProgressBar progBarTimer;
+	
+	public TextField txtPersContri;
+	public TextField txtCommContri;
 	
 	public ChoiceBox<String> cbCharRaidCamp;
-	public ChoiceBox<String> cbCharWar;
 	
 	public TableView<RaidTableEntry> tRaids;
 	public TableView<CampTableEntry> tCamps;
@@ -62,24 +119,10 @@ public class HomeController implements Initializable{
 	public TableColumn<CampTableEntry, String> tcCampLeft;
 	public TableColumn<CampTableEntry, String> tcCampAP;
 	public TableColumn<CampTableEntry, BigDecimal> tcCampValue;
-	
-	public static Stage window = new Stage();
-	private static ObservableList<String> chars;
-	static{
-		window.initModality(Modality.APPLICATION_MODAL);
-		chars = FXCollections.observableArrayList();
-		for(Character c : Main.allChars) {
-			chars.add(c.name);
-		}
-	}
-	
+
 	public Character chara = null;
 	
-	public static boolean raidsUpdated = false;
-	public static boolean threadRun = true;
-	public static boolean threadIsRunning = true;
-	
-	private Thread t = new Thread() {
+	private Thread tRaidCampRefresh = new Thread() {
 		public void run() {
 			while(threadRun) {
 				if(raidsUpdated) {
@@ -93,29 +136,142 @@ public class HomeController implements Initializable{
 					raidsUpdated = false;
 					try {
 						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+					} catch (InterruptedException e) {}
 				}
 				else {
 					try {
 						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+					} catch (InterruptedException e) {}
 				}
 			}
 			threadIsRunning = false;
-			System.out.println("Thread stopped");
+			System.out.println("Raid and camp refresh thread stopped");
+			tWarRefresh.interrupt();
+		}
+	};
+	
+	private Thread tWarRefresh = new Thread() {
+		public void run() {
+			while(War.isActive && threadRun) {
+				System.out.println("Refreshing war...");
+				
+				Platform.runLater(new Runnable() {
+					public void run() {
+						refreshWarStats();
+					}
+				});
+				
+				try {
+					Thread.sleep(20000);
+				} catch (InterruptedException e) {}
+			}
+			threadIsRunning = false;
+			System.out.println("War refresh thread stopped");
 		}
 	};
 	
 	
+	public void refreshWarStats() {
+		int timeDiff = (int) TimeUnit.MINUTES.convert(Main.war.end.getTime() - new Date().getTime(), TimeUnit.MILLISECONDS);
+		int hr = timeDiff / 60;
+		int min = timeDiff % 60;
+		
+		progBarTimer.setProgress((double) timeDiff - (double) (TimeUnit.MINUTES.convert(Main.war.end.getTime() - Main.war.start.getTime(), TimeUnit.MILLISECONDS)));
+		
+		lWarTimer.setText("Time left: " + String.valueOf(hr) + ":" + String.valueOf(min) + "h");
+		if(txtPersContri.getText().isEmpty() || txtPersContri.getText() == null) {
+			txtPersContri.setText("Time left: ---");
+		}
+		
+		int contri;
+		
+		List<Label> lPersTiers = new ArrayList<>();
+		lPersTiers.add(lPersT1);
+		lPersTiers.add(lPersT2);
+		lPersTiers.add(lPersT3);
+		lPersTiers.add(lPersT4);
+		lPersTiers.add(lPersT5);
+		lPersTiers.add(lPersT6);
+		lPersTiers.add(lPersT7);
+		lPersTiers.add(lPersT8);
+		lPersTiers.add(lPersT9);
+		lPersTiers.add(lPersT10);
+		
+		List<Label> lCommTiers = new ArrayList<>();
+		lCommTiers.add(lCommT1);
+		lCommTiers.add(lCommT2);
+		lCommTiers.add(lCommT3);
+		lCommTiers.add(lCommT4);
+		
+		timeDiff = (int) TimeUnit.MINUTES.convert(new Date().getTime() - Main.war.start.getTime(), TimeUnit.MILLISECONDS);
+		int totalWarTime = (int) TimeUnit.MINUTES.convert(Main.war.end.getTime() - Main.war.start.getTime(), TimeUnit.MILLISECONDS);
+		double timePercent = (double) timeDiff / (double) totalWarTime;
+		
+		try {
+			contri = Integer.parseInt(txtPersContri.getText());
+			
+			lPersProgress.setText(contri + " / " + Main.war.personalTiers.get(String.valueOf("1")));
+			progBarPersContri.setProgress((double) contri / Double.valueOf(Main.war.personalTiers.get(String.valueOf("1"))));
+			
+			for(int i = 0; i < Main.war.personalTiers.size(); i++) {
+				if(contri >= Integer.valueOf(Main.war.personalTiers.get(String.valueOf(i + 1)))) {
+					lPersTiers.get(i).setText("T" + (i+1) + ": DONE");
+					lPersTExpec.setText("Expected tier: T" + (i+1));
+					if(contri < Integer.valueOf(Main.war.personalTiers.get(String.valueOf(i + 2)))) {
+						progBarPersContri.setProgress((double) contri / Double.valueOf(Main.war.personalTiers.get(String.valueOf((i+2)))));
+						lPersProgress.setText(contri + " / " + Main.war.personalTiers.get(String.valueOf((i+2))));
+					}
+				}
+				else {
+					lPersTiers.get(i).setText("T" + (i+1) + ": " + String.valueOf((contri - Integer.valueOf(Main.war.personalTiers.get(String.valueOf((i + 1)))) * timePercent)));
+					if(contri - Integer.valueOf(Main.war.personalTiers.get(String.valueOf((i + 1)))) * timePercent >= 0) {
+						lPersTExpec.setText("Expected tier: T" + (i+1));
+					}
+				}
+			}
+			
+		} catch(NumberFormatException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			contri = Integer.parseInt(txtCommContri.getText());
+			
+			lCommProgress.setText(contri + " / " + Main.war.communityTiers.get(String.valueOf("1")));
+			progBarCommContri.setProgress((double) contri / Double.valueOf(Main.war.communityTiers.get(String.valueOf("1"))));
+			
+			for(int i = 0; i < Main.war.communityTiers.size(); i++) {
+				if(contri >= Integer.valueOf(Main.war.communityTiers.get(String.valueOf(i + 1)))) {
+					lCommTiers.get(i).setText("T" + (i+1) + ": DONE");
+					lCommTExpec.setText("Expected tier: T" + (i+1));
+					if(contri < Integer.valueOf(Main.war.communityTiers.get(String.valueOf(i + 2)))) {
+						progBarCommContri.setProgress((double) contri / Double.valueOf(Main.war.communityTiers.get(String.valueOf((i+2)))));
+						lCommProgress.setText(contri + " / " + Main.war.communityTiers.get(String.valueOf((i+2))));
+					}
+				}
+				else {
+					lCommTiers.get(i).setText("T" + (i+1) + ": " + String.valueOf((contri - Integer.valueOf(Main.war.communityTiers.get(String.valueOf((i + 1)))) * timePercent)));
+					if(contri - Integer.valueOf(Main.war.communityTiers.get(String.valueOf((i + 1)))) * timePercent >= 0) {
+						lCommTExpec.setText("Expected tier: T" + (i+1));
+					}
+				}
+			}
+			
+		} catch(NumberFormatException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+				
+		txtPersContri.setText("0");
+		txtCommContri.setText("0");
 		
-		t.start();
+		tRaidCampRefresh.start();
+		tWarRefresh.start();
 		
 		lAP.setVisible(false);
 		lFS.setVisible(false);
@@ -124,8 +280,6 @@ public class HomeController implements Initializable{
 		
 		cbCharRaidCamp.setItems(chars);
 		cbCharRaidCamp.setValue(chars.get(0));
-		//cbCharWar.setItems(chars);
-		//cbCharWar.setValue(cbCharRaidCamp.getValue());
 		
 		tcRaidId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		tcRaidName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -409,8 +563,26 @@ public class HomeController implements Initializable{
 	public void saveAndQuit() {
 		if(ConfirmBox.display("Are you sure?", "Are you sure you want to save and quit?")) {
 			threadRun = false;
+			tWarRefresh.interrupt();
 			Main.window.close();
 		}
+	}
+	
+	public void closeProgram() {
+		threadRun = false;
+		tWarRefresh.interrupt();
+		Main.window.close();
+	}
+	
+	public static void setWindowOnCloseRequest() {
+		Main.window.setOnCloseRequest(e -> {
+			e.consume();
+			boolean result = ConfirmBox.display("Close program?", "Are you sure you want to close the program?");
+			if(result) {
+				threadRun = false;
+				Main.window.close();
+			}
+		});
 	}
 	
 }

@@ -1,4 +1,4 @@
-package application;
+package hr.mpomahac.dotd.controllers;
 
 import java.io.IOException;
 import java.net.URL;
@@ -6,8 +6,8 @@ import java.util.ResourceBundle;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import application.Raid.Size;
-import application.Raid.Type;
+import hr.mpomahac.dotd.models.Raid;
+import hr.mpomahac.dotd.models.Raid.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;

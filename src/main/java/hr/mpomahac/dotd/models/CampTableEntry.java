@@ -1,9 +1,9 @@
-package application;
+package hr.mpomahac.dotd.models;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import application.Camp.Achievement;
+import hr.mpomahac.dotd.models.Camp.Achievement;
 
 public class CampTableEntry {
 

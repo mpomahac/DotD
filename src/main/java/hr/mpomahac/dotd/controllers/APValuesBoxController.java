@@ -1,4 +1,4 @@
-package application;
+package hr.mpomahac.dotd.controllers;
 
 import java.net.URL;
 import java.util.ArrayList;

@@ -1,5 +1,6 @@
-package application;
+package hr.mpomahac.dotd.controllers;
 
+import hr.mpomahac.dotd.models.Character;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
