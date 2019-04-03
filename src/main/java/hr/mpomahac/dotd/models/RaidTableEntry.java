@@ -1,4 +1,4 @@
-package application;
+package hr.mpomahac.dotd.models;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

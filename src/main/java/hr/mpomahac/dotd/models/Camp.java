@@ -1,17 +1,27 @@
-package application;
+package hr.mpomahac.dotd.models;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import hr.mpomahac.dotd.controllers.Main;
+
 public class Camp {
+	
+	private static final Logger LOGGER = LogManager.getLogger("resourceLogger");
+	
+	public static String FILE;
 	
 	public static final SortedMap<String, String> apTiers;
 	static
@@ -72,10 +82,13 @@ public class Camp {
 		
 		int id = Integer.parseInt(data[0]);
 		String name = data[1];
-		List<Achievement> achievements = new ArrayList<>();
+		LOGGER.info("Read camp " + name + " with id " + id + ".");
 		
+		List<Achievement> achievements = new ArrayList<>();
+		LOGGER.info("Achievements list:");
 		for(String s : achieves) {
 			achievements.add(Achievement.valueOf(s));
+			LOGGER.info("***" + Achievement.valueOf(s).name() + "***");
 		}
 		
 		new Camp(id, name, achievements);
@@ -83,7 +96,7 @@ public class Camp {
 	}
 	
 	public static void saveCamps() {
-		File f = new File("./camps.dat");
+		File f = new File(FILE);
 		try {
 			FileWriter fw = new FileWriter(f, false);
 			PrintWriter pw = new PrintWriter(fw, true);
@@ -99,19 +112,24 @@ public class Camp {
 	}
 	
 	public static void loadCamps() {
-		File f = new File("./camps.dat");
+		LOGGER.info("************************************************");
+		LOGGER.info("LOADING CAMPS FROM " + FILE + " FILE.");
+		LOGGER.info("************************************************");
+		File f = new File(FILE);
 		try {
 			Scanner scanner = new Scanner(f);
 			String str;
 			
 			while(scanner.hasNextLine()) {
 				str = scanner.nextLine();
+				LOGGER.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 				Camp.fromString(str);
 			}
 			scanner.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		LOGGER.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 	
 	public static void reloadCamps() {

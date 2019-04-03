@@ -1,4 +1,4 @@
-package application;
+package hr.mpomahac.dotd.models;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,9 +14,20 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Map.Entry;
 
+import hr.mpomahac.dotd.controllers.HomeController;
+import hr.mpomahac.dotd.controllers.Main;
+
 public class Raid {
+	
+	private static final Logger LOGGER = LogManager.getLogger("resourceLogger");
+	
+	public static String FILE;
 	
 	public static Map<String, BigDecimal> numbers;
 	static {
@@ -146,6 +157,24 @@ public class Raid {
 			apValues.put(pair[0], pair[1]);
 		}
 		
+		LOGGER.info("Loaded " + size.name() + " raid " + name + " with id " + id + ".");
+		LOGGER.info("Damage values:");
+		
+		for(int i = 0; i < 4; i++) {
+			if(i == 0) {
+				LOGGER.info("***AP: " + data[6] + "***");
+			}
+			else if(i == 1) {
+				LOGGER.info("***FS: " + data[7] + "***");
+			}
+			else if(i == 2) {
+				LOGGER.info("***OS: " + data[8] + "***");
+			}
+			else {
+				LOGGER.info("***MS: " + data[9] + "***");
+			}
+		}
+		
 		new Raid(id, name, type, size, slots, hp, ap, fs, os, ms, apValues);
 	}
 	
@@ -228,7 +257,7 @@ public class Raid {
 	}
 	
 	public static void saveRaids() {
-		File f = new File("./raids.dat");
+		File f = new File(FILE);
 		try {
 			FileWriter fw = new FileWriter(f, false);
 			PrintWriter pw = new PrintWriter(fw, true);
@@ -244,19 +273,24 @@ public class Raid {
 	}
 
 	public static void loadRaids() {
-		File f = new File("./raids.dat");
+		LOGGER.info("************************************************");
+		LOGGER.info("LOADING RAIDS FROM " + FILE + " FILE.");
+		LOGGER.info("************************************************");
+		File f = new File(FILE);
 		try {
 			Scanner scanner = new Scanner(f);
 			String str;
 			
 			while(scanner.hasNextLine()) {
 				str = scanner.nextLine();
+				LOGGER.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 				Raid.fromString(str);
 			}
 			scanner.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		LOGGER.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 	
 	public static void reloadRaids() {

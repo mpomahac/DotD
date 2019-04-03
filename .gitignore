@@ -1,0 +1,8 @@
+*.class
+**.class
+/target
+/bin
+/.settings
+\target
+\bin
+\.settings

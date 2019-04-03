@@ -1,4 +1,4 @@
-package application;
+package hr.mpomahac.dotd.models;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,12 +10,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.Map.Entry;
+
+import hr.mpomahac.dotd.controllers.Main;
+
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class War {
 	
-	public static SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy'T'hh:mm");
+	public static String FILE;
+	
+	public static SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy'T'HH:mm");
 	public static boolean isActive = false;
 	
 	public String name;
@@ -89,7 +94,7 @@ public class War {
 	}
 	
 	public static void saveWar() {
-		File f = new File("./war.dat");
+		File f = new File(FILE);
 		try {
 			FileWriter fw = new FileWriter(f, false);
 			PrintWriter pw = new PrintWriter(fw, true);
@@ -104,7 +109,7 @@ public class War {
 	}
 	
 	public static void loadWar() {
-		File f = new File("./war.dat");
+		File f = new File(FILE);
 		try {
 			Scanner scanner = new Scanner(f);
 			String str;

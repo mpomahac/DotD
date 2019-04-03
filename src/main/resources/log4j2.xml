@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Configuration status="WARN">
+
+	<Properties>
+		<Property name="LS">${sys:file.separator}</Property>
+		<Property name="log_folder">C:/Users/emroamp/Documents/workspace-sts-3.9.6.RELEASE/DotD/logs</Property>
+	</Properties>
+	
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} | %msg%n"/>
+		</Console>
+		<File fileName="${log_folder}${LS}${date:yyyyMMdd_HHmmss}_main.log" name="MainLogFile">
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} | %msg%n"/>
+		</File>
+		<File fileName="${log_folder}${LS}${date:yyyyMMdd_HHmmss}_resource.log" name="ResourceLogFile">
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} | %msg%n"/>
+		</File>
+	</Appenders>
+
+	<Loggers>
+		<Logger level="debug" name="root">
+			<AppenderRef ref="Console"/>
+		</Logger>
+		<Logger name="mainLogger">
+			<AppenderRef ref="MainLogFile"/>
+		</Logger>
+		<Logger name="resourceLogger">
+			<AppenderRef ref="ResourceLogFile"/>
+		</Logger>
+	</Loggers>
+
+</Configuration>

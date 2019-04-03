@@ -1,4 +1,4 @@
-package application;
+package hr.mpomahac.dotd.controllers;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -8,41 +8,30 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class ConfirmBox {
-	
-	static boolean answer;
+public class AlertBox {
 
-	public static boolean display(String title, String message) {
+	public static void display(String title, String message) {
 		Stage window = new Stage();
 		
+		//Make window obligatory to resolve
 		window.initModality(Modality.APPLICATION_MODAL);
+		
 		window.setTitle(title);
 		window.setMinWidth(300);
+		
 		Label label = new Label();
 		label.setText(message);
 		
-		//Create 2 buttons
-		Button btnYes = new Button("Yes");
-		Button btnNo = new Button("No");
-		
-		btnYes.setOnAction(e -> {
-			answer = true;
-			window.close();
-		});
-		
-		btnNo.setOnAction(e -> {
-			answer = false;
-			window.close();
-		});
+		Button closeBtn = new Button("Submit");
+		closeBtn.setOnAction(e -> window.close());
 		
 		VBox layout = new VBox(10);
-		layout.getChildren().addAll(label, btnYes, btnNo);
+		layout.getChildren().addAll(label, closeBtn);
 		layout.setAlignment(Pos.CENTER);
+		
 		Scene scene = new Scene(layout);
 		window.setScene(scene);
 		window.showAndWait();
-		
-		return answer;
 	}
 	
 }
