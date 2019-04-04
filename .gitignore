@@ -9,3 +9,4 @@
 \.settings*
 /logs
 \logs
+*log4j2.xml

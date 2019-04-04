@@ -28,8 +28,12 @@ public class Main extends Application{
 	public static List<Character> allChars = new ArrayList<>();
 	public static War war;
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		launch(args);
+	}*/
+	
+	public static void run() {
+		launch(null);
 	}
 	
 	@Override

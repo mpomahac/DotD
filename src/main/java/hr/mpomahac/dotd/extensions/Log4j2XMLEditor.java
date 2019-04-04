@@ -21,12 +21,13 @@ import org.xml.sax.SAXException;
 
 public class Log4j2XMLEditor {
 	
-	public Document doc;
+	private Document doc;
+	private DocumentBuilder builder;
 
 	public Log4j2XMLEditor(String filePath) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
-			DocumentBuilder builder = factory.newDocumentBuilder();
+			builder = factory.newDocumentBuilder();
 			this.doc = builder.parse(filePath);
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			e.printStackTrace();
@@ -42,15 +43,17 @@ public class Log4j2XMLEditor {
 			}
 		}
 		
-		saveChanges();
+		saveChanges(logPath);
 	}
 	
-	private void saveChanges() {
+	private void saveChanges(String logPth) {
 		TransformerFactory factory = TransformerFactory.newInstance();
 		try {
 			Transformer transformer = factory.newTransformer();
 			DOMSource src = new DOMSource(doc);
 			StreamResult result = new StreamResult(new File("src/main/resources/log4j2.xml"));
+			transformer.transform(src, result);
+			result = new StreamResult(new File("target/classes/log4j2.xml"));
 			transformer.transform(src, result);
 		} catch (TransformerException e) {
 			e.printStackTrace();

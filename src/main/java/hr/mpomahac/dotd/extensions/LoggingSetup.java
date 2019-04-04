@@ -18,7 +18,7 @@ public class LoggingSetup {
 		System.out.println("Setting log path in log4j2.xml to " + logFolderAbsPath);
 		log4j2XMLEditor.setLogPath(logFolderAbsPath);
 		
-		Main.main(null);
+		Main.run();
 	}
 
 }
