@@ -11,6 +11,9 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.Map.Entry;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import hr.mpomahac.dotd.controllers.Main;
 
 import java.util.SortedMap;
@@ -18,8 +21,9 @@ import java.util.TreeMap;
 
 public class War {
 	
-	public static String FILE;
+	private static final Logger LOGGER = LogManager.getLogger("resourceLogger");
 	
+	public static String FILE;
 	public static SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy'T'HH:mm");
 	public static boolean isActive = false;
 	
@@ -90,6 +94,8 @@ public class War {
 			communityTiers.put(pair[0], pair[1]);
 		}
 		
+		LOGGER.info("Loaded war " + name + " with start time at " + start + " and end time at " + end + ".");
+		
 		new War(name, start, end, personalTiers, communityTiers);
 	}
 	
@@ -109,6 +115,9 @@ public class War {
 	}
 	
 	public static void loadWar() {
+		LOGGER.info("************************************************");
+		LOGGER.info("LOADING WARS FROM " + FILE + " FILE.");
+		LOGGER.info("************************************************");
 		File f = new File(FILE);
 		try {
 			Scanner scanner = new Scanner(f);
@@ -116,6 +125,10 @@ public class War {
 			
 			while(scanner.hasNextLine()) {
 				str = scanner.nextLine();
+				if(str.equals("")) {
+					break;
+				}
+				LOGGER.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 				War.fromString(str);
 			}
 			
@@ -123,14 +136,17 @@ public class War {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		LOGGER.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 	
 	private void isWarActive(Date start, Date end) {
 		if(end.before(new Date()) || start.after(new Date())) {
 			War.isActive = false;
+			LOGGER.info(this.name + " is not active.");
 		}
 		else {
 			War.isActive = true;
+			LOGGER.info(this.name + " is active.");
 		}
 	}
 

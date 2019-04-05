@@ -1,6 +1,7 @@
 package hr.mpomahac.dotd.controllers;
 import java.io.File;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,7 +81,7 @@ public class Main extends Application{
 		LOGGER.info("=========================================");
 		
 		start = System.currentTimeMillis();
-		Parent root = FXMLLoader.load(getClass().getResource("/fxml/Home.fxml"));
+		Parent root = FXMLLoader.load(new URL("file:///" + RESOURCE_FOLDER_PATH + "/fxml/Home.fxml"));
 		System.out.println("Setting primary stage to window.");
 		window = primaryStage;
 		window.setTitle("DotD Tools");

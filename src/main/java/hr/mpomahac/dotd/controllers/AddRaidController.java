@@ -184,7 +184,7 @@ public class AddRaidController implements Initializable {
 		btnAPTiers.setOnAction(e -> {
 			try {
 				APValuesBoxController.s = cbSize.getValue().toString();
-				apValues = APValuesBoxController.display(FXMLLoader.load(getClass().getResource("/fxml/APValuesBox.fxml")), cbSize.getValue());
+				apValues = APValuesBoxController.display(FXMLLoader.load(new URL("file:///" + Main.RESOURCE_FOLDER_PATH + "/fxml/APValuesBox.fxml")), cbSize.getValue());
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}

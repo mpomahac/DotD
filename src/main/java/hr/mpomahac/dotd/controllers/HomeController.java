@@ -485,7 +485,7 @@ public class HomeController implements Initializable{
 	
 	public void addChar() {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/fxml/AddChar.fxml"));
+			Parent root = FXMLLoader.load(new URL("file:///" + Main.RESOURCE_FOLDER_PATH + "/fxml/AddChar.fxml"));
 			window.setTitle("Add character");
 			window.setScene(new Scene(root));
 			window.show();
@@ -496,7 +496,7 @@ public class HomeController implements Initializable{
 	
 	public void deleteChar() {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/fxml/DeleteChar.fxml"));
+			Parent root = FXMLLoader.load(new URL("file:///" + Main.RESOURCE_FOLDER_PATH + "/fxml/DeleteChar.fxml"));
 			window.setTitle("Delete character");
 			window.setScene(new Scene(root));
 			window.show();
@@ -507,7 +507,7 @@ public class HomeController implements Initializable{
 	
 	public void addRaid() {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/fxml/AddRaid.fxml"));
+			Parent root = FXMLLoader.load(new URL("file:///" + Main.RESOURCE_FOLDER_PATH + "/fxml/AddRaid.fxml"));
 			window.setTitle("Add raid");
 			window.setScene(new Scene(root));
 			window.show();
@@ -518,7 +518,7 @@ public class HomeController implements Initializable{
 	
 	public void deleteRaid() {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/fxml/DeleteRaid.fxml"));
+			Parent root = FXMLLoader.load(new URL("file:///" + Main.RESOURCE_FOLDER_PATH + "/fxml/DeleteRaid.fxml"));
 			window.setTitle("Delete raid");
 			window.setScene(new Scene(root));
 			window.show();
@@ -529,7 +529,7 @@ public class HomeController implements Initializable{
 	
 	public void addCamp() {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/fxml/AddCamp.fxml"));
+			Parent root = FXMLLoader.load(new URL("file:///" + Main.RESOURCE_FOLDER_PATH + "/fxml/AddCamp.fxml"));
 			window.setTitle("Add campaign");
 			window.setScene(new Scene(root));
 			window.show();
@@ -540,7 +540,7 @@ public class HomeController implements Initializable{
 	
 	public void deleteCamp() {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/fxml/DeleteCamp.fxml"));
+			Parent root = FXMLLoader.load(new URL("file:///" + Main.RESOURCE_FOLDER_PATH + "/fxml/DeleteCamp.fxml"));
 			window.setTitle("Delete campaign");
 			window.setScene(new Scene(root));
 			window.show();
@@ -551,7 +551,7 @@ public class HomeController implements Initializable{
 	
 	public void startWar() {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/fxml/StartWar.fxml"));
+			Parent root = FXMLLoader.load(new URL("file:///" + Main.RESOURCE_FOLDER_PATH + "/fxml/StartWar.fxml"));
 			window.setTitle("Start war");
 			window.setScene(new Scene(root));
 			window.show();

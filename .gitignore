@@ -11,3 +11,5 @@
 \logs
 *log4j2.xml
 *.prefs
+src/main/resources/log4j2.xml
+.settings/org.eclipse.jdt.core.prefs
