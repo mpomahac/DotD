@@ -10,3 +10,4 @@
 /logs
 \logs
 *log4j2.xml
+*.prefs
